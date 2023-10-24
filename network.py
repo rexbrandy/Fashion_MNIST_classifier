@@ -24,6 +24,15 @@ class Network():
         print(self.biases)
         print(self.weights)
 
+    def sigmoid(z):
+        return 1 / 1 + np.exp(-z)
+
+    def feedforward(self, a):
+        for w, b in zip(self.weights, self.biases):
+            a = self.sigmoid(np.dot(w, a) + b)
+        return a
+
+
 if __name__ == '__main__':
     net = Network([2, 4, 1])
 
