@@ -2,19 +2,13 @@ import numpy as np
 
 class Network():
     '''
-    This class will take a list as an argument.
-    Each element in the list will represent a layer in the network and the value of the element will
-    represent the number of neurons in each layer.
-
-    net = Network([2, 4, 1])
-
-    This input would represent 3 layers.
-    Layer 1 would contain 2 neurons
-    Layer 2 contains 4 neurons.
-    Layer 3 contains 1 final neuron.
-
+    This class is a basic neural network. It contains functions for Sigmoid activation, a feed forward loop and 
+    stocastic gradient descent.
     The biases and weights for each neuron are randomly generated Gaussian distrubtions.
     This will be the statrting point for each neuron and we hope to improve this with training.
+
+    Parameters:
+    size: array - each element is a layer, the value is the number of neuron
     '''
     def __init__(self, sizes):
         self.num_layers = len(sizes)
@@ -25,7 +19,13 @@ class Network():
         print(self.weights)
 
     def sigmoid(z):
-        return 1 / 1 + np.exp(-z)
+        '''
+        This is a sigmoid activation function.
+
+        Parameters:
+        z: TODO - weighted sum of paramters
+        '''
+        return 1.0 / (1.0 + np.exp(-z))
 
     def feedforward(self, a):
         for w, b in zip(self.weights, self.biases):
