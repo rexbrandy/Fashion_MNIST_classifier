@@ -25,6 +25,8 @@ class Network():
         return a
 
     def SGD(self, training_data, batch_size, epochs, lr, test_data=None):
+        if test_data:
+            n_test = len(test_data)
         n_samples = len(training_data)
 
         for epoch in epochs:
@@ -35,6 +37,13 @@ class Network():
 
             for batch in mini_batches:
                 self.update_mini_batch(batch, lr)
+
+            if test_data:
+                print("Epoch {0}: {1} / {2}".format(
+                    epoch, self.evaluate(test_data), n_test))
+            else:
+                print("Epoch {0} complete".format(epoch))
+
 
     def update_mini_batch(self, batch, lr):
         nabla_b = [np.zeroes(b.shape) for b in self.biases]
