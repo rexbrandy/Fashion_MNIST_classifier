@@ -27,7 +27,13 @@ def load_file(path):
     return (training_data, validation_data, test_data)
 
 def vectorize_results(j):
-    results = np.zeroes((10, 1))
+    '''
+    Returns a 10-dimension vector with `1.0` in the element position 
+    corresponding to the correct digit.
+    e.g. if the label = 2 the vector will look like
+    [0, 0, 1.0, 0, 0, 0, 0, 0, 0, 0]
+    '''
+    results = np.zeros((10, 1))
     results[j] = 1.0
     return results
 
@@ -36,13 +42,13 @@ def load_data_wrapper():
 
     training_inputs = [np.reshape(X, (784, 1)) for X in training[0]]
     training_results = [vectorize_results(y) for y in training[1]]
-    training_data = zip(training_inputs, training_results)
+    training_data = [training_inputs, training_results]
 
     validation_inputs = [np.reshape(X, (784, 1)) for X in validation[0]]
-    validation_data = zip(validation_inputs, validation[1])
+    validation_data = [validation_inputs, validation[1]]
 
     test_inputs = [np.reshape(X, (784, 1)) for X in test[0]]
-    test_data = zip(test_inputs, test[1])
+    test_data = [test_inputs, test[1]]
 
     return (training_data, validation_data, test_data)
 
@@ -55,4 +61,7 @@ if __name__ == '__main__':
     print('training:\n', training_data[1].shape)
     print('validation:\n', validation_data[1].shape)
     print('test:\n', test_data[1].shape)
+
+    (training_data, validation_data, test_data) = load_data_wrapper()
+    print('training:\n', training_data[0][1])
     
