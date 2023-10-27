@@ -16,9 +16,6 @@ class Network():
         self.biases = [np.random.randn(y, 1) for y in sizes[1:]]
         self.weights = [np.random.randn(y, x) for x, y in zip(sizes[:-1], sizes[1:])]
 
-        print(self.biases)
-        print(self.weights)
-
     def feedforward(self, a):
         for w, b in zip(self.weights, self.biases):
             a = self.sigmoid(np.dot(w, a) + b)
@@ -27,13 +24,11 @@ class Network():
     def SGD(self, training_data, batch_size, epochs, lr, test_data=None):
         if test_data:
             n_test = len(test_data)
-        n_samples = len(training_data)
+        n_samples = len(training_data[0])
 
-        for epoch in epochs:
-            random.shuffle(training_data)
-
-            for i in range(n_samples):
-                mini_batches = [training_data[k:k+batch_size] for k in range(0, n_samples, batch_size)]
+        for epoch in range(epochs):
+            # training_data needs to be split into X, y
+            mini_batches = [ training_data[k:k+batch_size] for k in range(0, n_samples, batch_size) ]
 
             for batch in mini_batches:
                 self.update_mini_batch(batch, lr)
@@ -46,18 +41,22 @@ class Network():
 
 
     def update_mini_batch(self, batch, lr):
-        nabla_b = [np.zeroes(b.shape) for b in self.biases]
-        nabla_w = [np.zeroes(w.shape) for w in self.weights]
+        print('Updating batch')
+        nabla_b = [np.zeros(b.shape) for b in self.biases]
+        nabla_w = [np.zeros(w.shape) for w in self.weights]
 
-        for X, y in batch:
+        for input in batch:
+            X = input[0]
+            y = input[1]
+
             delta_nabla_w, delta_nabla_b = self.backprop(X, y)
 
             nabla_b = [(nb+dnb) for nb, dnb, in zip(nabla_b, delta_nabla_b)]
             nabla_w = [(nw+dnw) for nw, dnw, in zip(nabla_w, delta_nabla_w)]
 
     def backprop(self, X, y):
-        nabla_b = [np.zeroes(b.shape) for b in self.biases]
-        nabla_w = [np.zeroes(w.shape) for w in self.weights]
+        nabla_b = [np.zeros(b.shape) for b in self.biases]
+        nabla_w = [np.zeros(w.shape) for w in self.weights]
 
         activation = X
         activations = [X]
@@ -66,7 +65,7 @@ class Network():
 
         for weight, bias in zip(self.weights, self.biases):
             z = np.dot(weight, activation) + bias
-            z_vectors.apped(z)
+            z_vectors.append(z)
             activation = sigmoid(z)
             activations.append(activation)
 
