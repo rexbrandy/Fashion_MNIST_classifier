@@ -67,9 +67,20 @@ def test_loop(model, dataloader, criterion):
 
 
 if __name__ == '__main__':
-    n_epochs = 50
-    lr = 0.01
+    parser = argparse.ArgumentParser(description='Python module to train network')
+    parser.add_argument('--epochs', type=int, help='Number of epochs for training loop')
+    parser.add_argument('--lr', type=float, help='Learning rate')
+    parser.add_argument('-l', type=bool, help='Load saved model - default False')
+    parser.add_argument('-s', type=bool, help='Save model - default True')
 
+    args = vars(parser.parse_args())
+
+    n_epochs = args['epochs'] if args['epochs'] else 10
+    lr = args['lr'] if args['lr'] else 0.01
+
+    load_model = True if args['l'] else False
+    save_model = True if args['s'] else False
+    
     # Declare model, loss, optim
     model = FeedForwardNet()
     criterion = nn.CrossEntropyLoss()
@@ -88,3 +99,4 @@ if __name__ == '__main__':
 
     # Test
     test_loop(model, test_dataloader, criterion)
+    
