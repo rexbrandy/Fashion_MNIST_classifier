@@ -1,42 +1,31 @@
 import torch
 import torch.nn as nn
+import matplotlib.pyplot as plt
 
 from .models import FeedForwardNet
-from.datasets import get_dataloaders
-from .train import train_loop
-from .tests import test_loop
+from .datasets import get_dataloaders
+from .train import train_loop, test_loop
+from .utils import labels_map
 
 MODEL_PATH = '/outputs/ff_net.pth'
 
-n_epochs = 50
-lr = 0.01
-
 # Declare model, loss, optim
 model = FeedForwardNet()
-criterion = nn.CrossEntropyLoss()
-optim = torch.optim.SGD(model.parameters(), lr=lr)
 
 # Load checkpoint
 checkpoint = torch.load(MODEL_PATH)
 model.load_state_dict(checkpoint['model_state_dict'])
-criterion.load_state_dict(checkpoint['loss_state_dict'])
 
 # Get dataloaders
-training_dataloader, test_dataloader = get_dataloaders(visualize=True)
+training_dataloader, test_dataloader = get_dataloaders(visualize=False)
 
-# Train
-train_loop(model, training_dataloader, criterion, optim, n_epochs)
+X, y = next(iter(training_dataloader))
 
-# Test
-test_loop(model, test_dataloader, criterion)
+image, correct_label = X[0], y[0]
 
-# Save
-total_epochs = n_epochs + checkpoint['epoch']
+guess = labels_map[int(model(image).argmax(1)[0])]
+answer = labels_map[int(correct_label)]
 
-torch.save({
-        'epoch': total_epochs,
-        'model_state_dict': model.state_dict(),
-        'loss_state_dict': criterion.state_dict()
-    },
-    MODEL_PATH,
-)
+print(f'Prediction: {guess}')
+print(f'Answer: {answer}')
+plt.imshow(image.squeeze(), cmap='gray')
