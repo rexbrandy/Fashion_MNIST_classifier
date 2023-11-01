@@ -4,10 +4,7 @@ import matplotlib.pyplot as plt
 
 from .models import FeedForwardNet
 from .datasets import get_dataloaders
-from .train import train_loop, test_loop
-from .utils import labels_map
-
-MODEL_PATH = '/outputs/ff_net.pth'
+from .utils import labels_map, MODEL_PATH
 
 # Declare model, loss, optim
 model = FeedForwardNet()

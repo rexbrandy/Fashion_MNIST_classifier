@@ -5,8 +5,7 @@ import torch.nn as nn
 
 from .models import FeedForwardNet
 from .datasets import get_dataloaders
-
-MODEL_PATH = '/outputs/ff_net.pth'
+from .utils import MODEL_PATH
 
 def train_loop(model, dataloader, criterion, optimizer, n_epochs=20, save_model=False, load_model=True):
     model.train()
@@ -70,8 +69,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Python module to train network')
     parser.add_argument('--epochs', type=int, help='Number of epochs for training loop')
     parser.add_argument('--lr', type=float, help='Learning rate')
-    parser.add_argument('-l', type=bool, help='Load saved model - default False')
-    parser.add_argument('-s', type=bool, help='Save model - default True')
+    parser.add_argument('-l', type=bool, help='Load saved model')
+    parser.add_argument('-s', type=bool, help='Save model')
 
     args = vars(parser.parse_args())
 
@@ -99,4 +98,3 @@ if __name__ == '__main__':
 
     # Test
     test_loop(model, test_dataloader, criterion)
-    

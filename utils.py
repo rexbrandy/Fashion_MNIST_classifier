@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 
+MODEL_PATH = '/outputs/ff_net.pth'
+
 labels_map = {
         0: "T-Shirt",
         1: "Trouser",
