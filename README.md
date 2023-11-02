@@ -5,10 +5,15 @@ Theis module provides a simple example of building and training a neural network
 Before using the script, ensure you have the following dependencies installed:
 
 Python 3.9
+
 PyTorch (usually installed with pip install torch)
+
 torchvision
+
 NumPy
+
 Matplotlib (for visualization, optional)
+
 
 # Usage
 To train model
